@@ -82,7 +82,7 @@ int main(void)
        string fileName = accessItem(listOfFiles, i);
        string filePath = lpkDirectory + fileName;
        string tempFileName = (fileName.substr(0,fileName.size() -3)) + "_temp.cs" ;
-       string doxyFileName = (fileName.substr(0,fileName.size() - 3)) + "_doxy.cs";
+       string doxyFileName = "doxygenFiles/" + (fileName.substr(0,fileName.size() - 3)) + "_doxy.cs";
 
        /*cout << fileName << endl;
        cout << filePath << endl;
