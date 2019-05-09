@@ -1,5 +1,5 @@
 ﻿/***************************************************
-File:           LPK_BarDisplay.cs
+unicorn
 Authors:        Christopher Onorati
 Last Updated:   12/9/2018
 Last Version:   2.17

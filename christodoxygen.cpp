@@ -76,6 +76,10 @@ int main(void)
     **/
    ifstream currFile;
    string line;
+   string newLine;
+   string key;
+   int replaceEnd;
+   int replaceStart;
    //loop through the list and edit each file
    for(int i = 0; i < listOfFiles.size(); i++)
    {  
@@ -90,17 +94,37 @@ int main(void)
        cout << doxyFileName << endl;
        cout << "\n";*/
 
+       //create a temp copy of the file for safety
        CopyFile(filePath.c_str(), tempFileName.c_str(), TRUE);
        currFile.open(tempFileName.c_str());
 
+       //create a file to store the doxygen-ized version of the current file
        ofstream doxyFile;
        remove(doxyFileName.c_str());
        doxyFile.open(doxyFileName.c_str());
 
+       //parse through each line of the file to make changes as needed
        if(currFile.is_open())
        {
            while(getline (currFile, line))
            {
+               // \file
+               if(line.find("File:") != string::npos)
+               {
+                   //NEED TO MAKE A FIND AND REPLACE FUNCTION (:
+                   cout << "FILE!";
+                   /*key = "File:";
+                   newLine = line;
+                   replaceEnd = key.size();
+                   replaceStart = newLine.find(key);
+
+                   newLine.replace(replaceStart, replaceEnd, "unicorn");*/
+                   newLine = line;
+                   newLine = "unicorn";
+                   line = newLine;
+
+               }
+
                doxyFile << line << endl;
            }
        }
