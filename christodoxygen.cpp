@@ -38,6 +38,17 @@ string accessItem(list <string> g, int pos)
     return "null";
 }
 
+string betterReplace(string line, string toReplace, string key)
+{
+    int location = line.find(toReplace);
+    if(location != string::npos)
+    {
+        line.replace(location, toReplace.size(), key);
+    }
+
+    return line;
+}
+
 int main(void)
 {
     /*
@@ -48,7 +59,8 @@ int main(void)
     string nameOfCurrFile;
     string metaKey = ".meta";
     string csKey = ".cs";
-    string lpkDirectory = "C:/Users/Nicholas/Documents/Aeon Work/TestDir/";
+    //INCLUDE FORWARD SLASH AT THE END, IDIOT
+    string lpkDirectory = "C:/Users/aeon.williams/Documents/LPK/Assets/Scripts/LPK/";
 
     /**
      * Scans a given directory and store each .cs file into a linked list
@@ -83,16 +95,17 @@ int main(void)
    //loop through the list and edit each file
    for(int i = 0; i < listOfFiles.size(); i++)
    {  
+       line = "";
        string fileName = accessItem(listOfFiles, i);
        string filePath = lpkDirectory + fileName;
        string tempFileName = (fileName.substr(0,fileName.size() -3)) + "_temp.cs" ;
        string doxyFileName = "doxygenFiles/" + (fileName.substr(0,fileName.size() - 3)) + "_doxy.cs";
 
-       /*cout << fileName << endl;
+       cout << fileName << endl;
        cout << filePath << endl;
        cout << tempFileName << endl;
        cout << doxyFileName << endl;
-       cout << "\n";*/
+       cout << "\n";
 
        //create a temp copy of the file for safety
        CopyFile(filePath.c_str(), tempFileName.c_str(), TRUE);
@@ -108,32 +121,29 @@ int main(void)
        {
            while(getline (currFile, line))
            {
-               // \file
-               if(line.find("File:") != string::npos)
-               {
-                   //NEED TO MAKE A FIND AND REPLACE FUNCTION (:
-                   cout << "FILE!";
-                   /*key = "File:";
-                   newLine = line;
-                   replaceEnd = key.size();
-                   replaceStart = newLine.find(key);
-
-                   newLine.replace(replaceStart, replaceEnd, "unicorn");*/
-                   newLine = line;
-                   newLine = "unicorn";
-                   line = newLine;
-
-               }
+               line = betterReplace(line, "File:", "\\file");
+               line = betterReplace(line, "Authors:", "\\author");
+               line = betterReplace(line, "Last Updated:", "\\date");
+               line = betterReplace(line, "Last Version:", "\\version");
+               line = betterReplace(line, "Description:", "\\brief");
+               line = betterReplace(line, "DESCRIPTION  :", "\\brief");
+               line = betterReplace(line, "Copyright", "\\copyright");
+               line = betterReplace(line, "CLASS NAME  :", "\\class");
+               line = betterReplace(line, "DESCRIPTION :", "\\brief");
+               line = betterReplace(line, "FUNCTION NAME:", "\\fn");
+               line = betterReplace(line, "INPUTS       : None", "");
+               line = betterReplace(line, "OUTPUTS      : None", "");
+               line = betterReplace(line, "INPUTS       :", "\\param");
+               line = betterReplace(line, "OUTPUTS      :", "\\return");
 
                doxyFile << line << endl;
            }
        }
 
-
+        currFile.close();
        //delete the temp file at the end
        remove(tempFileName.c_str());
    }
-
 
     return 0;
 }
